@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.kobweb.application)
     alias(libs.plugins.kobwebx.markdown)
+    alias(libs.plugins.serialization.plugin)
 }
 
 group = "com.example.blogmultiplatform"
@@ -24,6 +25,7 @@ kobweb {
 }
 
 kotlin {
+
     configAsKobwebApplication("blogmultiplatform")
 
     sourceSets {
@@ -38,6 +40,14 @@ kotlin {
             implementation(libs.silk.icons.fa)
             implementation(libs.kobwebx.markdown)
             
+        }
+
+        jvmMain {
+            dependencies {
+                implementation(libs.kobweb.api)
+                implementation(libs.mongo.db.kotlin.driver)
+                implementation(libs.kotlinx.serialization)
+            }
         }
     }
 }
