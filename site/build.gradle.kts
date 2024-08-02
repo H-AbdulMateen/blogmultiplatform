@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.kobweb.application)
-    alias(libs.plugins.kobwebx.markdown)
+//    alias(libs.plugins.kobwebx.markdown)
     alias(libs.plugins.serialization.plugin)
 }
 
@@ -26,11 +26,15 @@ kobweb {
 
 kotlin {
 
-    configAsKobwebApplication("blogmultiplatform")
+    jvm()
+    configAsKobwebApplication("blogmultiplatform", includeServer = true)
 
     sourceSets {
+
+
         commonMain.dependencies {
             implementation(compose.runtime)
+            implementation(libs.kotlinx.serialization)
         }
 
         jsMain.dependencies {
@@ -38,16 +42,17 @@ kotlin {
             implementation(libs.kobweb.core)
             implementation(libs.kobweb.silk)
             implementation(libs.silk.icons.fa)
-            implementation(libs.kobwebx.markdown)
+//            implementation(libs.kobwebx.markdown)
+            implementation(libs.kotlinx.serialization)
+
             
         }
 
-        jvmMain {
-            dependencies {
+        jvmMain.dependencies {
+
                 implementation(libs.kobweb.api)
                 implementation(libs.mongo.db.kotlin.driver)
                 implementation(libs.kotlinx.serialization)
-            }
         }
     }
 }
