@@ -4,11 +4,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import com.example.blogmultiplatform.models.Theme
+import com.example.blogmultiplatform.models.User
+import com.example.blogmultiplatform.models.UserWithoutPassword
 import com.example.blogmultiplatform.styles.LoginInputStyle
 import com.example.blogmultiplatform.util.Constants.FONT_FAMILY
+import com.example.blogmultiplatform.util.Id
 import com.example.blogmultiplatform.util.Res
+import com.example.blogmultiplatform.util.checkUserExistence
+import com.varabyte.kobweb.compose.css.Cursor
 import com.varabyte.kobweb.compose.css.FontWeight
 import com.varabyte.kobweb.compose.css.TextAlign
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
@@ -21,16 +27,19 @@ import com.varabyte.kobweb.compose.ui.attrsModifier
 import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.backgroundColor
 import com.varabyte.kobweb.compose.ui.modifiers.color
+import com.varabyte.kobweb.compose.ui.modifiers.cursor
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
 import com.varabyte.kobweb.compose.ui.modifiers.fontFamily
 import com.varabyte.kobweb.compose.ui.modifiers.fontWeight
 import com.varabyte.kobweb.compose.ui.modifiers.height
+import com.varabyte.kobweb.compose.ui.modifiers.id
 import com.varabyte.kobweb.compose.ui.modifiers.margin
 import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.compose.ui.modifiers.textAlign
 import com.varabyte.kobweb.compose.ui.modifiers.width
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.Page
+import com.varabyte.kobweb.core.rememberPageContext
 import com.varabyte.kobweb.silk.components.forms.Button
 import com.varabyte.kobweb.silk.components.forms.ButtonSize
 import com.varabyte.kobweb.silk.components.forms.Input
@@ -39,6 +48,10 @@ import com.varabyte.kobweb.silk.components.forms.TextInput
 import com.varabyte.kobweb.silk.components.graphics.Image
 import com.varabyte.kobweb.silk.components.style.toModifier
 import com.varabyte.kobweb.silk.components.text.SpanText
+import kotlinx.browser.document
+import kotlinx.browser.localStorage
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.web.attributes.InputType
 import org.jetbrains.compose.web.css.backgroundColor
 import org.jetbrains.compose.web.css.color
@@ -51,11 +64,15 @@ import org.jetbrains.compose.web.css.padding
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.width
 import org.jetbrains.compose.web.dom.Text
+import org.w3c.dom.HTMLInputElement
+import org.w3c.dom.set
 
 @Page
 @Composable
 fun LoginScreen() {
-    var errorText by remember { mutableStateOf("Error message will go here") }
+    var errorText by remember { mutableStateOf(" ") }
+    val scope = rememberCoroutineScope()
+    val context = rememberPageContext()
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -80,7 +97,8 @@ fun LoginScreen() {
                         height(54.px)
                         backgroundColor(Colors.White)
                     }
-                },
+                }
+                    .id(Id.usernameInput),
                 value = username,
                 onValueChanged = { username = it },
                 placeholder = "Username"
@@ -104,7 +122,8 @@ fun LoginScreen() {
                             height(54.px)
                             backgroundColor(Colors.White)
                         }
-                    },
+                    }
+                        .id(Id.passwordInput),
                     placeholder = "Password"
                 )
                 RightInset(width = 4.5.cssRem, modifier = Modifier.padding(16.px)) {
@@ -119,7 +138,36 @@ fun LoginScreen() {
             }
 
             Button(
-                onClick = {},
+                onClick = {
+                    scope.launch {
+                        val usernameInput = (document.getElementById(Id.usernameInput) as HTMLInputElement).value
+                        val passwordInput = (document.getElementById(Id.passwordInput) as HTMLInputElement).value
+                        if (usernameInput.isNotEmpty() && passwordInput.isNotEmpty()){
+                            val user = checkUserExistence(
+                                user = User(
+                                    username = usernameInput,
+                                    password = passwordInput
+                                )
+                            )
+                            if (user != null){
+                                rememberLoggedIn(
+                                    remember = true,
+                                    user = user
+                                )
+                                context.router.navigateTo("admin")
+                            }else{
+                                errorText = "user doesn't exist."
+                                delay(3000)
+                                errorText = " "
+                            }
+                        }else{
+                            errorText = "Input fields are empty."
+                            delay(3000)
+                            errorText = " "
+                        }
+                    }
+
+                },
                 modifier = Modifier.margin(top = 16.px).attrsModifier {
                     style {
                         backgroundColor(Theme.Primary.rgb)
@@ -128,7 +176,8 @@ fun LoginScreen() {
                         color(Colors.White)
                         fontFamily(FONT_FAMILY)
                     }
-                }.fontWeight(FontWeight.Medium),
+                }.fontWeight(FontWeight.Medium)
+                    .cursor(Cursor.Pointer),
                 size = ButtonSize.LG
             ) {
                 SpanText(text = "Sign in")
@@ -144,5 +193,16 @@ fun LoginScreen() {
             )
 
         }
+    }
+}
+
+private fun rememberLoggedIn(
+    remember: Boolean,
+    user: UserWithoutPassword? = null
+){
+    localStorage["remember"] = remember.toString()
+    if (user != null){
+        localStorage["userId"] = user.id
+        localStorage["username"] = user.username
     }
 }
