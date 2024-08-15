@@ -7,13 +7,13 @@ import org.bson.codecs.ObjectIdGenerator
 @Serializable
 actual data class User(
     @SerialName("_id")
-    actual val id: String = ObjectIdGenerator().generate().toString(),
+    actual val _id: String = ObjectIdGenerator().generate().toString(),
     actual val username: String = "",
     actual val password: String = ""
 )
 @Serializable
 actual data class UserWithoutPassword(
     @SerialName("_id")
-    actual val id: String = ObjectIdGenerator().generate().toString(),
+    actual val _id: String = ObjectIdGenerator().generate().toString(),
     actual val username: String = ""
 )

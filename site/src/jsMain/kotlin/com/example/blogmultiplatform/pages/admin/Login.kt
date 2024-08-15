@@ -154,7 +154,7 @@ fun LoginScreen() {
                                     remember = true,
                                     user = user
                                 )
-                                context.router.navigateTo("admin")
+                                context.router.navigateTo("/admin")
                             }else{
                                 errorText = "user doesn't exist."
                                 delay(3000)
@@ -202,7 +202,7 @@ private fun rememberLoggedIn(
 ){
     localStorage["remember"] = remember.toString()
     if (user != null){
-        localStorage["userId"] = user.id
+        localStorage["userId"] = user._id
         localStorage["username"] = user.username
     }
 }

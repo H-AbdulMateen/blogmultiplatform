@@ -20,7 +20,7 @@ suspend fun userCheck(context: ApiContext) {
             User(username = it.username, password = hashPassword(it.password))
         ) }
         if (user != null){
-            context.res.setBodyText(Json.encodeToString(UserWithoutPassword(id = user.id, username = user.username)))
+            context.res.setBodyText(Json.encodeToString(UserWithoutPassword(_id = user._id, username = user.username)))
         }else{
             context.res.setBodyText(Json.encodeToString(Exception("User doesn't exist.")))
         }
@@ -28,6 +28,20 @@ suspend fun userCheck(context: ApiContext) {
 
     }catch (ex: Exception) {
         context.res.setBodyText(Json.encodeToString(Exception(ex.message)))
+    }
+}
+@Api(routeOverride = "checkuserid")
+suspend fun checkUserId(context: ApiContext){
+    try {
+        val idRequest = context.req.body?.decodeToString()?.let { Json.decodeFromString<String>(it) }
+        val result = idRequest?.let { context.data.getValue<MongoDB>().checkUserId(it) }
+        if (result != null){
+            context.res.setBodyText(Json.encodeToString(result))
+        }else{
+            context.res.setBodyText(Json.encodeToString(false))
+        }
+    }catch (ex: Exception){
+        context.res.setBodyText(Json.encodeToString<Boolean>(false))
     }
 }
 
