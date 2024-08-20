@@ -12,14 +12,14 @@ import com.varabyte.kobweb.core.Page
 
 @Page
 @Composable
-fun HomePage(){
+fun CreatePage(){
     isUserLoggedIn {
-        HomeScreen()
+        CreateScreen()
     }
 }
 
 @Composable
-fun HomeScreen(){
+fun CreateScreen(){
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center

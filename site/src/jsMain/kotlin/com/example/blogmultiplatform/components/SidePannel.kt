@@ -2,11 +2,13 @@ package com.example.blogmultiplatform.components
 
 import androidx.compose.runtime.Composable
 import com.example.blogmultiplatform.models.Theme
+import com.example.blogmultiplatform.navigation.Screen
 import com.example.blogmultiplatform.styles.NavigationItemStyle
 import com.example.blogmultiplatform.util.Constants.FONT_FAMILY
 import com.example.blogmultiplatform.util.Constants.SIDE_PANEL_WIDTH
 import com.example.blogmultiplatform.util.Id
 import com.example.blogmultiplatform.util.Res
+import com.example.blogmultiplatform.util.logout
 import com.varabyte.kobweb.compose.css.Cursor
 import com.varabyte.kobweb.compose.dom.svg.Path
 import com.varabyte.kobweb.compose.dom.svg.Svg
@@ -29,6 +31,7 @@ import com.varabyte.kobweb.compose.ui.modifiers.width
 import com.varabyte.kobweb.compose.ui.modifiers.zIndex
 import com.varabyte.kobweb.compose.ui.thenIf
 import com.varabyte.kobweb.compose.ui.toAttrs
+import com.varabyte.kobweb.core.rememberPageContext
 import com.varabyte.kobweb.silk.components.graphics.Image
 import com.varabyte.kobweb.silk.components.style.toModifier
 import com.varabyte.kobweb.silk.components.text.SpanText
@@ -38,6 +41,7 @@ import org.jetbrains.compose.web.css.vh
 
 @Composable
 fun SidePanel() {
+    val context = rememberPageContext()
     Column(
         modifier = Modifier
             .padding(topBottom = 50.px, leftRight = 40.px)
@@ -65,25 +69,36 @@ fun SidePanel() {
             modifier = Modifier.margin(bottom = 24.px),
             icon = Res.PathIcon.home,
             label = "Home",
-            selected = true,
-            onClick = {}
+            selected = context.route.path == Screen.AdminHome.route,
+            onClick = {
+                context.router.navigateTo(Screen.AdminHome.route)
+            }
         )
         NavigationItem(
             modifier = Modifier.margin(bottom = 24.px),
             icon = Res.PathIcon.create,
             label = "Create Post",
-            onClick = {}
+            selected = context.route.path == Screen.AdminCreate.route,
+            onClick = {
+                context.router.navigateTo(Screen.AdminCreate.route)
+            }
         )
         NavigationItem(
             modifier = Modifier.margin(bottom = 24.px),
             icon = Res.PathIcon.posts,
             label = "Posts",
-            onClick = {}
+            selected = context.route.path == Screen.AdminMyPosts.route,
+            onClick = {
+                context.router.navigateTo(Screen.AdminMyPosts.route)
+            }
         )
         NavigationItem(
             icon = Res.PathIcon.logout,
             label = "Logout",
-            onClick = {}
+            onClick = {
+                logout()
+                context.router.navigateTo(Screen.AdminLogin.route)
+            }
         )
     }
 }
@@ -144,8 +159,6 @@ fun VectorIcon(
         Path {
             if (selected) {
                 attr(attr = "style", value = "stroke: ${Theme.Primary.hex}")
-            }else{
-                attr(attr = "style", value = "stroke: ${Theme.White.hex}")
             }
             attr(attr = "id", value = Id.vectorIcon)
             attr(attr = "d", value = pathData)
