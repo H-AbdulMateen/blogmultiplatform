@@ -27,7 +27,7 @@ fun CreateScreen(){
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            SidePanel()
+            SidePanel(onMenuClick = {})
         }
     }
 }

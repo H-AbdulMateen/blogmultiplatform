@@ -2,6 +2,7 @@ package com.example.blogmultiplatform.pages.admin
 
 import androidx.compose.runtime.Composable
 import com.example.blogmultiplatform.components.SidePanel
+import com.example.blogmultiplatform.components.SidePanelInternal
 import com.example.blogmultiplatform.util.isUserLoggedIn
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
@@ -27,7 +28,7 @@ fun MyPostsScreen() {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            SidePanel()
+            SidePanel(onMenuClick = {})
         }
     }
 }
