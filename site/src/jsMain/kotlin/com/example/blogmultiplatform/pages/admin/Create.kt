@@ -1,6 +1,7 @@
 package com.example.blogmultiplatform.pages.admin
 
 import androidx.compose.runtime.Composable
+import com.example.blogmultiplatform.components.AdminPageLayout
 import com.example.blogmultiplatform.components.SidePanel
 import com.example.blogmultiplatform.util.isUserLoggedIn
 import com.varabyte.kobweb.compose.foundation.layout.Box
@@ -20,14 +21,7 @@ fun CreatePage(){
 
 @Composable
 fun CreateScreen(){
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            SidePanel(onMenuClick = {})
-        }
+    AdminPageLayout {
+
     }
 }

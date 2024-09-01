@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.example.blogmultiplatform.components.AdminPageLayout
 import com.example.blogmultiplatform.components.OverflowSidePanel
 import com.example.blogmultiplatform.components.SidePanel
 import com.example.blogmultiplatform.util.isUserLoggedIn
@@ -25,22 +26,7 @@ fun HomePage(){
 
 @Composable
 fun HomeScreen(){
-    var overflowMenuOpened by remember { mutableStateOf(false) }
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            SidePanel(onMenuClick = {
-                overflowMenuOpened = true
-            })
-            if (overflowMenuOpened){
-                OverflowSidePanel(onMenuClose = {
-                    overflowMenuOpened = false
-                })
-            }
-        }
+    AdminPageLayout {
+
     }
 }

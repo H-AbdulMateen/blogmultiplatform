@@ -110,14 +110,6 @@ fun SidePanelInternal() {
 @Composable
 private fun NavigationItems() {
     val context = rememberPageContext()
-    SpanText(
-        modifier = Modifier
-            .margin(bottom = 30.px)
-            .fontFamily(FONT_FAMILY)
-            .fontSize(14.px)
-            .color(Theme.HalfWhite.rgb),
-        text = "Dashboard"
-    )
     NavigationItem(
         modifier = Modifier.margin(bottom = 24.px),
         label = "Home",
