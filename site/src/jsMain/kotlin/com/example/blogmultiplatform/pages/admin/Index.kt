@@ -8,13 +8,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.example.blogmultiplatform.components.AdminPageLayout
 import com.example.blogmultiplatform.components.LoadingIndicator
-import com.example.blogmultiplatform.components.OverflowSidePanel
-import com.example.blogmultiplatform.components.SidePanel
 import com.example.blogmultiplatform.models.RandomJoke
 import com.example.blogmultiplatform.models.Theme
 import com.example.blogmultiplatform.navigation.Screen
 import com.example.blogmultiplatform.util.Constants.FONT_FAMILY
-import com.example.blogmultiplatform.util.Constants.PAGE_WIDTH
 import com.example.blogmultiplatform.util.Constants.SIDE_PANEL_WIDTH
 import com.example.blogmultiplatform.util.Res
 import com.example.blogmultiplatform.util.fetchRandomJoke
@@ -39,7 +36,6 @@ import com.varabyte.kobweb.compose.ui.modifiers.fontSize
 import com.varabyte.kobweb.compose.ui.modifiers.fontWeight
 import com.varabyte.kobweb.compose.ui.modifiers.height
 import com.varabyte.kobweb.compose.ui.modifiers.margin
-import com.varabyte.kobweb.compose.ui.modifiers.maxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.onClick
 import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.compose.ui.modifiers.position

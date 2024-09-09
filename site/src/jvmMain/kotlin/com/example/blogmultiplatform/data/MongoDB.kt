@@ -1,5 +1,6 @@
 package com.example.blogmultiplatform.data
 
+import com.example.blogmultiplatform.models.Post
 import com.example.blogmultiplatform.models.User
 import com.example.blogmultiplatform.util.Constants.DATABASE_NAME
 import com.mongodb.client.model.Filters
@@ -25,6 +26,12 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
     //    private val client = MongoClient.create(System.getenv("MONGODB_URI"))
     private val database = client.getDatabase(DATABASE_NAME)
     private val userCollection = database.getCollection<User>("user")
+    private val postCollection = database.getCollection<Post>("post")
+
+
+    override suspend fun addPost(post: Post): Boolean {
+        return postCollection.insertOne(post).wasAcknowledged()
+    }
 
     override suspend fun checkUserExistence(user: User): User? {
     return try {
