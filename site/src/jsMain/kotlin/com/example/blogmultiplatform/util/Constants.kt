@@ -13,6 +13,7 @@ object Res {
     object Image{
         const val logo = "/logo.svg"
         const val laugh = "/laugh.png"
+        const val logoHome = "logo.svg"
     }
     object Icon {
         const val bold = "/bold.svg"

@@ -102,6 +102,8 @@ import org.w3c.dom.HTMLTextAreaElement
 import org.w3c.dom.get
 import kotlin.js.Date
 
+
+
 @Page
 @Composable
 fun CreatePage(){
@@ -109,7 +111,6 @@ fun CreatePage(){
         CreateScreen()
     }
 }
-
 
 @Composable
 fun CreateScreen() {

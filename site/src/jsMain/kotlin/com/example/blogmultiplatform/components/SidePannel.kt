@@ -66,7 +66,6 @@ import org.jetbrains.compose.web.css.ms
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.vh
-
 @Composable
 fun SidePanel(onMenuClick: () -> Unit) {
     val breakpoint = rememberBreakpoint()
@@ -78,41 +77,39 @@ fun SidePanel(onMenuClick: () -> Unit) {
 }
 
 @Composable
-fun SidePanelInternal() {
-    val context = rememberPageContext()
+private fun SidePanelInternal() {
     Column(
         modifier = Modifier
-            .padding(topBottom = 50.px, leftRight = 40.px)
+            .padding(leftRight = 40.px, topBottom = 50.px)
             .width(SIDE_PANEL_WIDTH.px)
             .height(100.vh)
             .position(Position.Fixed)
             .backgroundColor(Theme.Secondary.rgb)
             .zIndex(9)
-    ){
+    ) {
         Image(
             modifier = Modifier.margin(bottom = 60.px),
             src = Res.Image.logo,
-            description = "Logo Image"
-        )
-
-        SpanText(
-            modifier = Modifier
-                .margin(bottom = 30.px)
-                .fontFamily(FONT_FAMILY)
-                .fontSize(14.px)
-                .color(Theme.HalfWhite.rgb),
-            text = "Dashboard"
+            alt = "Logo Image"
         )
         NavigationItems()
     }
 }
 
 @Composable
-private fun NavigationItems() {
+fun NavigationItems() {
     val context = rememberPageContext()
+    SpanText(
+        modifier = Modifier
+            .margin(bottom = 30.px)
+            .fontFamily(FONT_FAMILY)
+            .fontSize(14.px)
+            .color(Theme.HalfWhite.rgb),
+        text = "Dashboard"
+    )
     NavigationItem(
         modifier = Modifier.margin(bottom = 24.px),
-        label = "Home",
+        title = "Home",
         selected = context.route.path == Screen.AdminHome.route,
         icon = Res.PathIcon.home,
         onClick = {
@@ -122,7 +119,7 @@ private fun NavigationItems() {
     NavigationItem(
         modifier = Modifier.margin(bottom = 24.px),
         selected = context.route.path == Screen.AdminCreate.route,
-        label = "Create Post",
+        title = "Create Post",
         icon = Res.PathIcon.create,
         onClick = {
             context.router.navigateTo(Screen.AdminCreate.route)
@@ -131,14 +128,14 @@ private fun NavigationItems() {
     NavigationItem(
         modifier = Modifier.margin(bottom = 24.px),
         selected = context.route.path == Screen.AdminMyPosts.route,
-        label = "My Posts",
+        title = "My Posts",
         icon = Res.PathIcon.posts,
         onClick = {
             context.router.navigateTo(Screen.AdminMyPosts.route)
         }
     )
     NavigationItem(
-        label = "Logout",
+        title = "Logout",
         icon = Res.PathIcon.logout,
         onClick = {
             logout()
@@ -151,25 +148,22 @@ private fun NavigationItems() {
 private fun NavigationItem(
     modifier: Modifier = Modifier,
     selected: Boolean = false,
+    title: String,
     icon: String,
-    label: String,
     onClick: () -> Unit
-){
+) {
     Row(
         modifier = NavigationItemStyle.toModifier()
             .then(modifier)
             .cursor(Cursor.Pointer)
-            .onClick {
-                onClick()
-            },
+            .onClick { onClick() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         VectorIcon(
             modifier = Modifier.margin(right = 10.px),
             selected = selected,
-            pathData = icon,
-
-            )
+            pathData = icon
+        )
         SpanText(
             modifier = Modifier
                 .id(Id.navigationText)
@@ -179,7 +173,7 @@ private fun NavigationItem(
                     condition = selected,
                     other = Modifier.color(Theme.Primary.rgb)
                 ),
-            text = label
+            text = title
         )
     }
 }
@@ -189,7 +183,7 @@ private fun VectorIcon(
     modifier: Modifier = Modifier,
     selected: Boolean,
     pathData: String
-){
+) {
     Svg(
         attrs = modifier
             .id(Id.svgParent)
@@ -239,12 +233,10 @@ private fun CollapsedSidePanel(onMenuClick: () -> Unit) {
     }
 }
 
-
-
 @Composable
 fun OverflowSidePanel(
     onMenuClose: () -> Unit,
-//    content: @Composable () -> Unit
+    content: @Composable () -> Unit
 ) {
     val context = rememberPageContext()
     val scope = rememberCoroutineScope()
@@ -315,7 +307,7 @@ fun OverflowSidePanel(
                     alt = "Logo Image"
                 )
             }
-            NavigationItems()
+            content()
         }
     }
 }

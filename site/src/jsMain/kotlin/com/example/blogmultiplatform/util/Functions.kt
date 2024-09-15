@@ -21,6 +21,7 @@ import org.jetbrains.compose.web.css.px
 import org.w3c.dom.HTMLTextAreaElement
 import org.w3c.dom.get
 import org.w3c.dom.set
+import kotlin.js.Date
 
 @Composable
 fun isUserLoggedIn(
@@ -158,4 +159,14 @@ fun applyControlStyle(
             onImageClick()
         }
     }
+}
+fun Long.parseDateString() = Date(this).toLocaleDateString()
+
+fun parseSwitchText(posts: List<String>): String {
+    return if (posts.size == 1) "1 Post Selected" else "${posts.size} Posts Selected"
+}
+
+fun validateEmail(email: String): Boolean {
+    val regex = "^[A-Za-z](.*)(@)(.+)(\\.)(.+)"
+    return regex.toRegex().matches(email)
 }

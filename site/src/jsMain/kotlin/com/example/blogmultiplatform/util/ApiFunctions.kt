@@ -9,6 +9,7 @@ import com.example.blogmultiplatform.models.Constants.CATEGORY_PARAM
 import com.example.blogmultiplatform.models.Constants.POST_ID_PARAM
 import com.example.blogmultiplatform.models.Constants.QUERY_PARAM
 import com.example.blogmultiplatform.models.Constants.SKIP_PARAM
+import com.example.blogmultiplatform.models.Newsletter
 import com.example.blogmultiplatform.models.Post
 import com.example.blogmultiplatform.models.RandomJoke
 import com.example.blogmultiplatform.models.User
@@ -241,7 +242,12 @@ suspend fun searchPostsByCategory(
         onError(e)
     }
 }
-
+suspend fun subscribeToNewsletter(newsletter: Newsletter): String {
+    return window.api.tryPost(
+        apiPath = "subscribe",
+        body = Json.encodeToString(newsletter).encodeToByteArray()
+    )?.decodeToString().toString().replace("\"", "")
+}
 inline fun <reified T> String?.parseData(): T {
     return Json.decodeFromString(this.toString())
 }
